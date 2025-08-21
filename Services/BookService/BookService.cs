@@ -1,54 +1,54 @@
 ﻿using LibraryManagementSystem.Models;
-using LibraryManagementSystem.Repositories.BookRepository;
+using LibraryManagementSystem.Repositories.UnitOfWork;
 
 namespace LibraryManagementSystem.Services.BookService
 {
     public class BookService : IBookService
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookRepository bookRepository) =>
-            _bookRepository = bookRepository;
+        public BookService(IUnitOfWork unitOfWork) =>
+            _unitOfWork = unitOfWork;
 
         public IEnumerable<Book> GetAllBooks()
         {
-            return _bookRepository.GetAll().ToList();
+            return _unitOfWork.Books.GetAll().ToList();
         }
 
-        public Book? GetBookById(string id)
+        public async Task<Book?> GetBookById(Guid id)
         {
-            return _bookRepository.Find(b => b.Id.ToString() == id);
+            return await _unitOfWork.Books.FindAsync(b => b.Id == id);
         }
 
         public async Task<bool> AddBook(Book book)
         {
-            var AddedBook = await _bookRepository.AddAsync(book);
-
-            if (AddedBook != null)
-                return true;
-
-            return false;
+            _unitOfWork.Books.Add(book);
+            var rows = await _unitOfWork.SaveChangesAsync();
+            return rows > 0;
         }
 
-        public bool DeleteBook(string id)
+        public async Task<bool> DeleteBook(Guid id)
         {
-            var book = _bookRepository.Find(b => b.Id.ToString() == id);
-            if (book == null)
-            {
-                return false; // Book not found
-            }
-            _bookRepository.Delete(book);
+            var book = _unitOfWork.Books.Find(b => b.Id == id);
+
+            if (book == null) return false; // Book not found
+
+            _unitOfWork.Books.Delete(book);
+            await _unitOfWork.SaveChangesAsync();
             return true; // Book deleted successfully   
         }
 
-        public bool EditBook(Book book)
+        public async Task<bool> EditBook(Book edited)
         {
-            var edited = _bookRepository.Update(book);
+            _unitOfWork.Books.Update(edited);
+            var rows = await _unitOfWork.SaveChangesAsync();
+            return rows > 0;
+        }
 
-            if (edited != null)
-                return true;
-
-            return false;
+        public async Task<bool> IsBookExists(string isbn)
+        {
+            var book = await _unitOfWork.Books.FindAsync(b => b.Isbn == isbn);
+            return book is not null;
         }
     }
 }

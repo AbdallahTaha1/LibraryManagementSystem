@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using LibraryManagementSystem.DTOs.BookDtos;
+using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Services.BookService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,83 +15,108 @@ namespace LibraryManagementSystem.Controllers
             _bookService = bookService;
             _mapper = mapper;
         }
-        // GET: BooksController
         public ActionResult Index()
         {
             var books = _bookService.GetAllBooks();
 
-            _mapper.Map<BookVM>(books);
+            var bookDtos = _mapper.Map<IEnumerable<BookDto>>(books);
 
-            return View(books);
+            return View(bookDtos);
         }
 
-        // GET: BooksController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: BooksController/Create
+        // GET: Books/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: BooksController/Create
+        // POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(CreateBookDto dto)
         {
-            try
+            // Check if the model state is valid
+            if (!ModelState.IsValid) return View(dto);
+
+            // Check if a book with the same Isban already exists
+            var isBookExists = await _bookService.IsBookExists(dto.Isbn);
+            if (isBookExists)
             {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("Isbn", "A book with this ISBN already exists.");
+                return View(dto);
             }
-            catch
+            // Map the DTO to the Book model and add it
+            var book = _mapper.Map<Book>(dto);
+
+            var result = await _bookService.AddBook(book);
+            if (!result)
             {
-                return View();
+                ModelState.AddModelError("", "Failed to add book.");
+                return View(dto);
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: BooksController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: Books/Edit/{guid}
+        public async Task<ActionResult> Edit(Guid id)
         {
-            return View();
+            var book = await _bookService.GetBookById(id);
+            if (book is null)
+            {
+                ModelState.AddModelError("", "Book not found.");
+                return RedirectToAction(nameof(Index));
+            }
+
+            var dto = _mapper.Map<UpdateBookDto>(book);
+            return View(dto);
         }
 
         // POST: BooksController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(UpdateBookDto updateBookDto)
         {
-            try
+            if (!ModelState.IsValid) return View(updateBookDto);
+
+            var book = await _bookService.GetBookById(updateBookDto.Id);
+            if (book == null)
             {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Book not found.");
+                return View(updateBookDto);
             }
-            catch
+
+            _mapper.Map(updateBookDto, book);
+
+            if (updateBookDto.Img != null)
             {
-                return View();
+                using var ms = new MemoryStream();
+                await updateBookDto.Img.CopyToAsync(ms);
+                book.DbImg = ms.ToArray();
             }
+
+            var result = await _bookService.EditBook(book);
+            if (!result)
+            {
+                ModelState.AddModelError("", "Failed to update book.");
+                return View(updateBookDto);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: BooksController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: BooksController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        // DELETE: Books/Delete/5
+        [HttpDelete]
+        public async Task<ActionResult> Delete(Guid id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            // Check if the book exists
+            var book = await _bookService.GetBookById(id);
+
+            if (book == null) return BadRequest();
+
+            var isDeleted = await _bookService.DeleteBook(id);
+            return isDeleted ? Ok() : BadRequest();
+
         }
     }
 }

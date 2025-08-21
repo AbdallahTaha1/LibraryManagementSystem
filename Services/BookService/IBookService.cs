@@ -3,11 +3,13 @@ namespace LibraryManagementSystem.Services.BookService
 {
     public interface IBookService
     {
-        Book? GetBookById(string id);
+        Task<Book?> GetBookById(Guid id);
         IEnumerable<Book> GetAllBooks();
+        // check if there is a book with the same ISBN
+        Task<bool> IsBookExists(string isbn);
         Task<bool> AddBook(Book book);
-        bool EditBook(Book book);
-        bool DeleteBook(string id);
+        Task<bool> EditBook(Book book);
+        Task<bool> DeleteBook(Guid id);
 
     }
 }

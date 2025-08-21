@@ -1,0 +1,72 @@
+﻿@using LibraryManagementSystem.Consts
+@using LibraryManagementSystem.DTOs.BookDtos
+@model CreateBookDto
+
+@{
+    ViewData["Title"] = "Add Book";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-plus-circle-dotted me-2"></i>
+                Add a new Book
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold"></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter Book Title" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Isbn" class="form-label fw-semibold"></label>
+                            <input asp-for="Isbn" class="form-control" placeholder="Enter Book ISBN" />
+                            <span asp-validation-for="Isbn" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Img" class="form-label fw-semibold"></label>
+                            <input asp-for="Img" type="file" class="form-control"
+                                   data-rule-extension="@FileSettings.AllowedExtentions.Replace(".", string.Empty)"
+                                   data-msg-extension="Not allowed extension"
+                                   data-rule-filesize="@FileSettings.MaxFileSizeInBytes"
+                                   data-msg-filesize="Maximum allowed size is @(FileSettings.MaxFileSizeInMB)MB">
+                            <small class="form-text text-muted">
+                                Allowed: @FileSettings.AllowedExtentions | Max: @(FileSettings.MaxFileSizeInMB)MB
+                            </small>
+                            <span asp-validation-for="Img" class="text-danger d-block"></span>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-check-circle me-1"></i> Save
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left me-1"></i> Back
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-center align-items-start pt-3">
+                        <img src="" class="cover-preview border rounded shadow-sm d-none"
+                             alt="Cover Preview"
+                             style="max-height: 350px; object-fit: contain;" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/fileSizeValidator.js" asp-append-version="true"></script>
+    <script src="~/js/bookForm.js" asp-append-version="true"></script>
+}

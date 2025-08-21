@@ -14,7 +14,7 @@ namespace LibraryManagementSystem.Models
         public int NumberOfCopies { get; set; }
         public int AvailableCopies { get; set; }
 
-        public IFormFile Img { get; set; } = null!;
+        public byte[]? DbImg { get; set; } = null!;
 
     }
 }

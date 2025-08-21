@@ -14,6 +14,8 @@ namespace LibraryManagementSystem.DTOs.BookDtos
         public int NumberOfCopies { get; set; }
         public int AvailableCopies { get; set; }
 
-        public IFormFile Img { get; set; } = null!;
+        public IFormFile? Img { get; set; } = null!;
+
+        public string? ImgSrc { get; set; } = null!;
     }
 }
