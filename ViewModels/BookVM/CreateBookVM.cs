@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagementSystem.Models
+namespace LibraryManagementSystem.ViewModels.BookVM
 {
-    public class Book
+    public class CreateBookVM
     {
-        [Key]
-        public Guid Id { get; set; }
         [Required, MaxLength(20)]
         public string Isbn { get; set; } = string.Empty;
         [Required, MaxLength(200)]
@@ -15,6 +13,5 @@ namespace LibraryManagementSystem.Models
         public int AvailableCopies { get; set; }
 
         public IFormFile Img { get; set; } = null!;
-
     }
 }

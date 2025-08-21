@@ -1,4 +1,8 @@
 using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Repositories.BaseRepository;
+using LibraryManagementSystem.Repositories.BookRepository;
+using LibraryManagementSystem.Repositories.TrasactionRepository;
+using LibraryManagementSystem.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +13,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+// Register the DbContext with the connection string
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString)
     );

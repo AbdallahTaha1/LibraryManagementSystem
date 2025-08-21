@@ -1,6 +1,10 @@
-﻿namespace LibraryManagementSystem.Repositories.TrasactionRepository
+﻿
+using LibraryManagementSystem.Models;
+using LibraryManagementSystem.Repositories.BaseRepository;
+
+namespace LibraryManagementSystem.Repositories.TrasactionRepository
 {
-    public interface ITransactionRepository
+    public interface ITransactionRepository : IBaseRepository<Transaction>
     {
     }
 }

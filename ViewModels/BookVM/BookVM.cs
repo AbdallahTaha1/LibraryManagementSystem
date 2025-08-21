@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagementSystem.Models
+namespace LibraryManagementSystem.ViewModels.BookVM
 {
-    public class Book
+    public class BookVM
     {
         [Key]
         public Guid Id { get; set; }
@@ -15,6 +15,5 @@ namespace LibraryManagementSystem.Models
         public int AvailableCopies { get; set; }
 
         public IFormFile Img { get; set; } = null!;
-
     }
 }
