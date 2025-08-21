@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagementSystem.ViewModels.BookVM
+namespace LibraryManagementSystem.DTOs.BookDtos
 {
-    public class UpdateBookVM
+    public class CreateBookDto
     {
-        [Key]
-        public Guid Id { get; set; }
         [Required, MaxLength(20)]
         public string Isbn { get; set; } = string.Empty;
         [Required, MaxLength(200)]

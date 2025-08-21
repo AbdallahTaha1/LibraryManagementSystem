@@ -1,9 +1,10 @@
 ﻿using LibraryManagementSystem.Consts;
 
-namespace LibraryManagementSystem.ViewModels.TransactionVM
+namespace LibraryManagementSystem.DTOs.TransactionDtos
 {
-    public class CreateTransactionVM
+    public class TransactionDto
     {
+        public DateTime Date { get; set; }
         public TransactionType Type { get; set; } // 0 for borrow, 1 for return
 
         public Guid UserId { get; set; }

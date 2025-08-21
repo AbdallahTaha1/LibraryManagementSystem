@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagementSystem.ViewModels.BookVM
+namespace LibraryManagementSystem.DTOs.BookDtos
 {
-    public class BookVM
+    public class UpdateBookDto
     {
         [Key]
         public Guid Id { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagementSystem.ViewModels.UserVM
+namespace LibraryManagementSystem.DTOs.UserDtos
 {
-    public class CreateUserVM
+    public class UserDto
     {
         public string Name { get; set; } = string.Empty;
         [Required, Phone, MaxLength(20)]
