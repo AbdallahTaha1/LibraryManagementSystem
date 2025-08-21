@@ -61,11 +61,8 @@ namespace LibraryManagementSystem.Controllers
         public async Task<ActionResult> Edit(Guid id)
         {
             var book = await _bookService.GetBookById(id);
-            if (book is null)
-            {
-                ModelState.AddModelError("", "Book not found.");
-                return RedirectToAction(nameof(Index));
-            }
+
+            if (book is null) return NotFound();
 
             var dto = _mapper.Map<UpdateBookDto>(book);
             return View(dto);
@@ -79,11 +76,8 @@ namespace LibraryManagementSystem.Controllers
             if (!ModelState.IsValid) return View(updateBookDto);
 
             var book = await _bookService.GetBookById(updateBookDto.Id);
-            if (book == null)
-            {
-                ModelState.AddModelError("", "Book not found.");
-                return View(updateBookDto);
-            }
+
+            if (book == null) return NotFound();
 
             _mapper.Map(updateBookDto, book);
 

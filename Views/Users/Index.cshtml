@@ -1,0 +1,54 @@
+﻿@using LibraryManagementSystem.DTOs.UserDtos
+@model IEnumerable<UserDto>
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-secondary">User List</h2>
+    <a class="btn btn-primary btn-lg" asp-action="Create">
+        <i class="bi bi-plus-circle me-2"></i> Add User
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning mt-5 text-center">
+        <h4 class="alert-heading">No Users Added!</h4>
+        <p class="mb-0">There are no users added yet.</p>
+    </div>
+}
+else
+{
+    <table class="table table-hover table-striped table-bordered align-middle shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th style="width:180px;" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@user.Name</td>
+                    <td>@user.PhoneNumber</td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-info me-2" asp-action="Edit" asp-route-id="@user.Id">
+                            <i class="bi bi-pencil-fill"></i> Edit
+                        </a>
+                        <button class="btn btn-sm btn-danger js-delete" data-id="@user.Id">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="~/js/deleteUser.js" asp-append-version="true"></script>
+}
