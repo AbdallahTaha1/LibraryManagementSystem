@@ -6,7 +6,7 @@ namespace LibraryManagementSystem.Models
     public class Transaction
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime Date { get; set; }
         public TransactionType Type { get; set; } // 0 for borrow, 1 for return
 

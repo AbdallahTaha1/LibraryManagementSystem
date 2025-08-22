@@ -15,6 +15,7 @@ namespace LibraryManagementSystem.Mapping
 
             // CreateBookDto -> Book
             CreateMap<CreateBookDto, Book>()
+                .ForMember(dest => dest.AvailableCopies, opt => opt.MapFrom(src => src.NumberOfCopies)) // Ignore Id for Create
                 .ForMember(dest => dest.DbImg,
                     opt => opt.MapFrom(src => ConvertIFormFileToBytes(src.Img)));
 

@@ -12,8 +12,6 @@ namespace LibraryManagementSystem.DTOs.BookDtos
         public string Title { get; set; } = string.Empty;
         [Required]
         public int NumberOfCopies { get; set; }
-        public int AvailableCopies { get; set; }
-
         public IFormFile? Img { get; set; } = null!;
 
         public string? ImgSrc { get; set; } = null!;

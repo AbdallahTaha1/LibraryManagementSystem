@@ -1,12 +1,17 @@
 ﻿using LibraryManagementSystem.Consts;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementSystem.DTOs.TransactionDtos
 {
     public class CreateTransactionDto
     {
-        public TransactionType Type { get; set; } // 0 for borrow, 1 for return
-
+        [Required]
         public Guid UserId { get; set; }
+
+        [Required]
         public Guid BookId { get; set; }
+
+        [Required]
+        public TransactionType Type { get; set; } // Borrow / Return
     }
 }

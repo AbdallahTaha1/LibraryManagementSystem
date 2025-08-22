@@ -27,6 +27,9 @@ else
                 <th style="width:120px;">Cover</th>
                 <th>Title</th>
                 <th>ISBN</th>
+                <th>Number of copies</th>
+                <th>Available</th>
+
                 <th style="width:180px;" class="text-center">Actions</th>
             </tr>
         </thead>
@@ -39,6 +42,8 @@ else
                     </td>
                     <td class="fw-bold">@book.Title</td>
                     <td>@book.Isbn</td>
+                    <td class="fw-bold">@book.NumberOfCopies</td>
+                    <td class="fw-bold">@book.AvailableCopies</td>
                     <td class="text-center">
                         <a class="btn btn-sm btn-info me-2" asp-action="Edit" asp-route-id="@book.Id">
                             <i class="bi bi-pencil-fill"></i> Edit

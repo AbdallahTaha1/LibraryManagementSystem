@@ -1,0 +1,58 @@
+﻿@using LibraryManagementSystem.DTOs.TransactionDtos
+@model IEnumerable<TransactionDto>
+
+@{
+    ViewData["Title"] = "Transactions List";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-secondary">Transactions</h2>
+    <a class="btn btn-primary btn-lg" asp-action="Create">
+        <i class="bi bi-plus-circle me-2"></i> New Transaction
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning mt-5 text-center">
+        <h4 class="alert-heading">No Transactions Found!</h4>
+        <p class="mb-0">There are no transactions recorded yet.</p>
+    </div>
+}
+else
+{
+    <table class="table table-hover table-striped table-bordered align-middle shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>User</th>
+                <th>Book</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td class="fw-bold">@t.UserName</td>
+                    <td>@t.BookTitle</td>
+                    <td>
+                        @if (t.Type == LibraryManagementSystem.Consts.TransactionType.Borrow)
+                        {
+                            <span class="badge bg-success">Borrow</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">Return</span>
+                        }
+                    </td>
+                    <td>@t.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="~/js/deleteTransaction.js" asp-append-version="true"></script>
+}

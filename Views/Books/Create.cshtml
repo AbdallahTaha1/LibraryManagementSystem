@@ -32,6 +32,12 @@
                         </div>
 
                         <div class="mb-3">
+                            <label asp-for="NumberOfCopies" class="form-label fw-semibold"></label>
+                            <input asp-for="NumberOfCopies" class="form-control" placeholder="Enter Book ISBN" />
+                            <span asp-validation-for="NumberOfCopies" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
                             <label asp-for="Img" class="form-label fw-semibold"></label>
                             <input asp-for="Img" type="file" class="form-control"
                                    data-rule-extension="@FileSettings.AllowedExtentions.Replace(".", string.Empty)"
